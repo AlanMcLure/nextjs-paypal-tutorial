@@ -10,8 +10,26 @@ function HomePage() {
           style={{
             color: "blue",
             layout: "horizontal",
-            label: "pay",
-          }} 
+          }}
+          createOrder={(data, actions) => {
+            return actions.order.create({
+              purchase_units: [
+                {
+                  amount: {
+                    value: "1.00",
+                  },
+                },
+              ],
+            });
+          }}
+          onApprove={(data, actions) => {
+            return actions.order.capture().then(function (details) {
+              alert("Transaction completed by " + details.payer.name.given_name);
+            });
+          }}
+          onCancel={(data) => {
+            alert("Transaction canceled");
+          }}
         />
       </PayPalScriptProvider>
     </div>
